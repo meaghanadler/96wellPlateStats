@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 Required libraries include:
 
-```{r setup}
+```{r setup, warning=FALSE,message=FALSE}
 library(Adler96wellstats)
 library(tidyverse)
 library(stringr)
@@ -45,6 +45,7 @@ Demonstrate growthstats() with plot
 ```{r, warning=FALSE, message=FALSE}
 #growthstats()
 MHExiguoGCstats <- platemeanstd(d)
+#vignette wouldn't render with the third input- unused argument error
 
 #Make the plot
 allwells<- ggplot(MHExiguoGCstats, aes(x=time, y= Mean, color = Sample, shape= Sample)) + 
@@ -61,6 +62,7 @@ Oh no! We see that a well was likely missed while loading "Initial OD C" replica
 
 ```{r, message=FALSE, warning=FALSE}
 badwellgone <-badwell(d,C4)
+#vignette wouldn't render with the third input- unused argument error
 
 minusC4<- ggplot(badwellgone, aes(x=time, y= Mean, color = factor(Sample), shape=factor(Sample))) + 
   geom_line() +
