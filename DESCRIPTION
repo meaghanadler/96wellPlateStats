@@ -1,0 +1,19 @@
+Package: Adler96wellstats
+Title: Calculates Mean and STD of replicates from a 96well plate by row
+Version: 0.0.0.9000
+Authors@R: 
+    person("Meaghan", "Adler", , "madler5@vols.utk.edu", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: This package contains two functions for processing time-series data from Gen5 plate reader.
+    The current version handles treatment groups by row because that it what my labmate who wanted to process some data quick did.
+    The renaming from the plate ID is handled by a separate excel document with a key.
+License: use_mit_license()
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
+Config/testthat/edition: 3
