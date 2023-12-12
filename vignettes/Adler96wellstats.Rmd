@@ -44,7 +44,7 @@ Demonstrate growthstats() with plot
 
 ```{r, warning=FALSE, message=FALSE}
 #growthstats()
-MHExiguoGCstats <- growthstats(d)
+MHExiguoGCstats <- platemeanstd(d)
 
 #Make the plot
 allwells<- ggplot(MHExiguoGCstats, aes(x=time, y= Mean, color = Sample, shape= Sample)) + 
