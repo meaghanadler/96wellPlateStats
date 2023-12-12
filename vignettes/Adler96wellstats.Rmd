@@ -14,8 +14,61 @@ knitr::opts_chunk$set(
 )
 ```
 
+Required libraries include:
+
 ```{r setup}
 library(Adler96wellstats)
+library(tidyverse)
+library(stringr)
+
 ```
 
-#trying to get package and vignette into git
+Load in the data and format the timestamp from Gen5:
+
+```{r, warning=FALSE, message=FALSE}
+# Load the sample growth curve data provided in the Growthcurver package.
+d <-read_csv("ExiguoGC.csv")
+
+#Load your key per row for the replicates
+idkey <-read_csv("ExiguoKey.csv")
+
+#Rename column headers: Timestamp = time
+colnames(d)[1] <- "time"
+
+#Format time column to hr:min:sec, then convert to hrs
+hms(d$time)        # format to 'hours:minutes:seconds'
+d$time <- hour(d$time)+minute(d$time)/60 + second(d$time)/60/60 #convert to hours
+```
+
+Demonstrate growthstats() with plot
+
+```{r, warning=FALSE, message=FALSE}
+#growthstats()
+MHExiguoGCstats <- growthstats(d)
+
+#Make the plot
+allwells<- ggplot(MHExiguoGCstats, aes(x=time, y= Mean, color = Sample, shape= Sample)) + 
+  geom_point() +
+  scale_color_brewer(palette="Dark2") +
+  geom_errorbar(ymin=(MHExiguoGCstats$Mean - MHExiguoGCstats$Std), ymax=(MHExiguoGCstats$Mean+ MHExiguoGCstats$Std), width = 0.5)+
+  labs(x="Time (HRS)", y="Mean OD600",color="Initial [ ]", shape = "Initial [ ]", title=" MH Growth Curve") +
+  theme_classic()
+
+allwells
+```
+
+Oh no! We see that a well was likely missed while loading "Initial OD C" replicates! Use the badwell function to remove the missed well- example is C4
+
+```{r, message=FALSE, warning=FALSE}
+badwellgone <-badwell(d,C4)
+
+minusC4<- ggplot(badwellgone, aes(x=time, y= Mean, color = factor(Sample), shape=factor(Sample))) + 
+  geom_line() +
+  geom_point() +
+  scale_color_brewer(palette="Dark2") +
+  geom_errorbar(ymin=(badwellgone$Mean - badwellgone$Std), ymax=(badwellgone$Mean+ badwellgone$Std), width = 0.5)+
+  labs(x="Time (HRS)", y="Mean OD600",color="Initial [ ]", shape = "Initial [ ]", title=" MH Growth Curve") +
+  theme_classic()
+
+minusC4
+```
